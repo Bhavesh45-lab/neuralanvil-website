@@ -1,0 +1,40 @@
+---
+layout: default
+title: Learn
+description: Structured lessons on the mathematics, architectures and engineering of modern AI, from Neural Anvil Academy.
+---
+<section class="page-hero">
+  <div class="glow"></div>
+  <img class="mark-bg" src="/assets/img/brand/mark.png" alt="">
+  <div class="wrap">
+    <span class="eyebrow"><span>Neural Anvil <b>Academy.</b></span></span>
+    <h1>Learn AI from <span class="grad">first principles.</span></h1>
+    <p class="lede">Four tracks, each a sequence of short lessons. Start with the maths, or join where your knowledge ends.</p>
+  </div>
+</section>
+
+<section class="tone-light rows">
+  <div class="wrap">
+    {% for t in site.tracks %}
+    {% assign lessons = site.lessons | where: "track", t.id | sort: "order" %}
+    <div class="row{% unless forloop.first %} row-sub{% endunless %}">
+      <div class="row-label"><span class="label">{{ t.level }}</span></div>
+      <div class="row-main track-row">
+        <div>
+          <h2 class="headline track-title">{{ t.name }}</h2>
+          <p class="sub">{{ t.summary }}</p>
+        </div>
+        {% if lessons.size > 0 %}
+        <ol class="lesson-list">
+          {% for l in lessons %}
+          <li><a href="{{ l.url }}"><span class="num">{{ l.order }}</span><span><strong>{{ l.title }}</strong><small>{{ l.summary }}</small></span><span class="arrow" aria-hidden="true">→</span></a></li>
+          {% endfor %}
+        </ol>
+        {% else %}
+        <p class="note">Lessons for this track are being written. Subscribe on YouTube to hear when they land.</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

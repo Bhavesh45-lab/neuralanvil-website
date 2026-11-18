@@ -1,0 +1,72 @@
+---
+layout: default
+title: Blog
+description: Original writing on RAG, AI agents, prompting and LLM internals from the Neural Anvil team.
+---
+{% assign posts = site.posts %}
+{% assign lead = posts.first %}
+<section class="page-hero">
+  <div class="glow"></div>
+  <img class="mark-bg" src="/assets/img/brand/mark.png" alt="">
+  <div class="wrap">
+    <span class="eyebrow"><span>Neural Anvil <b>blog.</b></span></span>
+    <h1>Notes from the <span class="grad">forge.</span></h1>
+    <p class="lede">How we design, build and debug AI systems, written by engineers who ship them. New articles every week.</p>
+  </div>
+</section>
+
+{% if lead %}
+<section class="tone-dark rows" aria-labelledby="lead-title">
+  <div class="wrap">
+    <div class="row">
+      <div class="row-label"><span class="label">Latest</span></div>
+      <a class="row-main lead-post" href="{{ lead.url }}">
+        {% if lead.cover %}<img src="{{ lead.cover }}" alt="" width="1600" height="900">{% endif %}
+        <div>
+          <span class="tag-line">{{ lead.category }}</span>
+          <h2 id="lead-title" class="headline">{{ lead.title }}</h2>
+          <p class="sub">{{ lead.description }}</p>
+          <span class="btn btn-white">Read article <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="tone-light rows" aria-labelledby="all-title">
+  <div class="wrap">
+    <div class="row">
+      <div class="row-label"><h2 id="all-title" class="label">All articles</h2></div>
+      <div class="row-main">
+        <div class="filters post-filters" role="group" aria-label="Filter by topic">
+          <button data-cat="All" aria-pressed="true">All</button>
+          {% assign cats = posts | map: "category" | uniq %}
+          {% for c in cats %}<button data-cat="{{ c }}" aria-pressed="false">{{ c }}</button>{% endfor %}
+        </div>
+        <div class="post-list">
+          {% for post in posts %}
+          <a class="post-card" href="{{ post.url }}" data-cat="{{ post.category }}">
+            {% if post.cover %}<img src="{{ post.cover }}" alt="" width="1600" height="900" loading="lazy">{% endif %}
+            <span class="tag-line">{{ post.category }}</span>
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.description }}</p>
+            <span class="post-card-meta">{{ post.date | date: "%-d %b %Y" }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.post-filters button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('.post-filters button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    document.querySelectorAll('.post-card').forEach(function (c) {
+      c.hidden = !(b.dataset.cat === 'All' || c.dataset.cat === b.dataset.cat);
+    });
+  });
+});
+</script>

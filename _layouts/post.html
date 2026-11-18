@@ -1,0 +1,67 @@
+---
+layout: default
+---
+<article class="post" data-post>
+  <header class="page-hero post-hero">
+    <div class="glow"></div>
+    <div class="wrap">
+      <a class="post-back" href="/blog/">All articles</a>
+      <span class="eyebrow"><span>{{ page.category | default: "Article" }}</span></span>
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}<p class="lede">{{ page.description }}</p>{% endif %}
+      <div class="post-meta">
+        <span>{{ page.author | default: "Neural Anvil" }}</span>
+        <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%-d %B %Y" }}</time>
+        <span data-readtime></span>
+      </div>
+    </div>
+  </header>
+
+  {% if page.cover %}
+  <div class="post-cover-wrap"><div class="wrap"><img class="post-cover" src="{{ page.cover }}" alt="" width="1600" height="900"></div></div>
+  {% endif %}
+
+  <div class="tone-light post-body">
+    <div class="wrap post-grid">
+      <aside class="toc" aria-label="On this page">
+        <span class="label label-sm">On this page</span>
+        <ol data-toc></ol>
+      </aside>
+      <div class="prose" data-prose>
+        {{ content }}
+
+        <footer class="post-foot">
+          {% if page.tags %}<div class="post-tags">{% for t in page.tags %}<span>{{ t }}</span>{% endfor %}</div>{% endif %}
+          <div class="post-share">
+            <span class="foot-k">Share</span>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ site.url }}{{ page.url }}" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://twitter.com/intent/tweet?url={{ site.url }}{{ page.url }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener">X</a>
+            <a href="https://wa.me/?text={{ page.title | url_encode }}%20{{ site.url }}{{ page.url }}" target="_blank" rel="noopener">WhatsApp</a>
+            <button type="button" class="copy-link" data-copy-link>Copy link</button>
+          </div>
+        </footer>
+
+        <nav class="post-pager" aria-label="More articles">
+          {% if page.previous %}<a class="pager-prev" href="{{ page.previous.url }}"><span class="foot-k">Previous</span>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+          {% if page.next %}<a class="pager-next" href="{{ page.next.url }}"><span class="foot-k">Next</span>{{ page.next.title }}</a>{% endif %}
+        </nav>
+      </div>
+    </div>
+  </div>
+</article>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Watch it explained.</h2>
+    <p class="lede">New breakdowns of RAG, agents and LLM internals every week on our channel.</p>
+    <div class="actions">
+      <a class="btn btn-white" href="https://www.youtube.com/@NuralAnvil45" target="_blank" rel="noopener">Subscribe on YouTube <span aria-hidden="true">→</span></a>
+      <a class="btn btn-line" href="/contact/">Build this with us</a>
+    </div>
+  </div>
+</section>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" defer></script>
+<script src="/assets/js/post.js" defer></script>

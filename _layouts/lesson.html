@@ -1,0 +1,55 @@
+---
+layout: default
+---
+{% assign track = site.tracks | where: "id", page.track | first %}
+{% assign lessons = site.lessons | where: "track", page.track | sort: "order" %}
+<article class="post lesson" data-post>
+  <header class="page-hero post-hero">
+    <div class="glow"></div>
+    <div class="wrap">
+      <a class="post-back" href="/learn/">All tracks</a>
+      <span class="eyebrow"><span>{{ track.name | default: "Lesson" }}</span></span>
+      <h1>{{ page.title }}</h1>
+      {% if page.summary %}<p class="lede">{{ page.summary }}</p>{% endif %}
+      <div class="post-meta">
+        <span>Lesson {{ page.order }} of {{ lessons.size }}</span>
+        {% if page.duration %}<span>{{ page.duration }}</span>{% endif %}
+        <span data-readtime></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="tone-light post-body">
+    <div class="wrap post-grid">
+      <aside class="toc lesson-nav" aria-label="Lessons in this track">
+        <span class="label label-sm">{{ track.name }}</span>
+        <ol>
+          {% for l in lessons %}
+          <li><a href="{{ l.url }}"{% if l.url == page.url %} aria-current="page"{% endif %}>{{ l.title }}</a></li>
+          {% endfor %}
+        </ol>
+        <span class="label label-sm toc-sub">On this page</span>
+        <ol data-toc></ol>
+      </aside>
+      <div class="prose" data-prose>
+        {{ content }}
+
+        {% assign prev = nil %}{% assign next = nil %}{% assign found = false %}
+        {% for l in lessons %}
+          {% if found and next == nil %}{% assign next = l %}{% endif %}
+          {% if l.url == page.url %}{% assign found = true %}{% endif %}
+          {% unless found %}{% assign prev = l %}{% endunless %}
+        {% endfor %}
+        <nav class="post-pager" aria-label="Lesson navigation">
+          {% if prev %}<a class="pager-prev" href="{{ prev.url }}"><span class="foot-k">Previous lesson</span>{{ prev.title }}</a>{% else %}<span></span>{% endif %}
+          {% if next %}<a class="pager-next" href="{{ next.url }}"><span class="foot-k">Next lesson</span>{{ next.title }}</a>{% endif %}
+        </nav>
+      </div>
+    </div>
+  </div>
+</article>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" defer></script>
+<script src="/assets/js/post.js" defer></script>

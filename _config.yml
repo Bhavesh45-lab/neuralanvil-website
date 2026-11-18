@@ -1,0 +1,51 @@
+title: Neural Anvil
+description: AI engineering and education institute. Forging the future of intelligence.
+url: https://neuralanvilai.com
+baseurl: ""
+timezone: Asia/Kolkata
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  auto_ids: true
+  math_engine: mathjax
+
+permalink: /blog/:title/
+
+collections:
+  lessons:
+    output: true
+    permalink: /learn/:name/
+
+defaults:
+  - scope: { path: "", type: posts }
+    values:
+      layout: post
+      author: Neural Anvil
+  - scope: { path: "", type: lessons }
+    values:
+      layout: lesson
+
+# Learning tracks shown on /learn/ (lessons choose one with `track: <id>`)
+tracks:
+  - id: maths
+    name: Mathematics of AI
+    level: Foundation
+    summary: Vectors, gradients, probability and optimisation, the handful of ideas every model is built from.
+  - id: deep-learning
+    name: Neural networks & deep learning
+    level: Core
+    summary: Build a network from scratch, then the architectures that followed it.
+  - id: llms
+    name: LLMs & transformers
+    level: Advanced
+    summary: How large language models read, attend, predict and get adapted to new tasks.
+  - id: applied
+    name: Applied AI engineering
+    level: Professional
+    summary: RAG, agents, evaluation and deployment, turning models into reliable products.
+
+exclude:
+  - README.md
+  - "*.py"

@@ -1,9 +1,11 @@
-/* Contact form: validation, then hand-off.
-   Set FORM_ENDPOINT to a Formspree / Getform / your own API URL to receive submissions.
-   Until then the form opens the visitor's email app with the message pre-filled. */
+/* Contact form: validation, then delivery to your inbox via FormSubmit (free, no account).
+   Put the email address that should receive enquiries in RECEIVE_AT.
+   The first submission sends a one-time "Activate Form" email to that address: click it once.
+   Until RECEIVE_AT is set, the form falls back to opening the visitor's email app. */
 (() => {
-  const FORM_ENDPOINT = ""; // e.g. "https://formspree.io/f/xxxxxxx"
-  const TO = "hello@neuralanvil.ai";
+  const RECEIVE_AT = ""; // e.g. "you@gmail.com"
+  const FORM_ENDPOINT = RECEIVE_AT ? `https://formsubmit.co/ajax/${RECEIVE_AT}` : "";
+  const TO = "hello@neuralanvilai.com";
 
   const form = document.querySelector("form.contact");
   if (!form) return;
@@ -31,12 +33,20 @@
     if (!ok) { status.textContent = "Check the highlighted fields and send again."; return; }
 
     const data = new FormData(form);
+    if (data.get("_honey")) return; // bot filled the hidden field
     const interests = data.getAll("interest").join(", ") || "Not specified";
 
     if (FORM_ENDPOINT) {
       status.textContent = "Sending…";
       try {
-        const r = await fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } });
+        const payload = {
+          name: data.get("name"), email: data.get("email"), company: data.get("company") || "-",
+          budget: data.get("budget"), interested_in: interests, message: data.get("message"),
+          page: location.href,
+          _subject: `New enquiry from ${data.get("name")} (neuralanvilai.com)`,
+          _replyto: data.get("email"), _template: "table", _captcha: "false",
+        };
+        const r = await fetch(FORM_ENDPOINT, { method: "POST", body: JSON.stringify(payload), headers: { "Content-Type": "application/json", Accept: "application/json" } });
         if (!r.ok) throw new Error();
         form.reset();
         status.textContent = "Message sent. We reply within one business day.";

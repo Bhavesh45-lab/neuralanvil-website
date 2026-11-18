@@ -53,6 +53,13 @@
     els.forEach((el) => el.classList.add("in"));
   }
 
+  // Highlight the current section in the nav (also covers blog posts and lessons)
+  const here = location.pathname.replace(/index\.html$/, "");
+  document.querySelectorAll(".nav-links a").forEach((a) => {
+    const path = new URL(a.href, location.href).pathname;
+    if (path !== "/" && here.startsWith(path)) a.setAttribute("aria-current", "page");
+  });
+
   // Footer year
   const y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();

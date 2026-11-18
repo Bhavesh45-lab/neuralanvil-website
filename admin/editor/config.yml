@@ -1,0 +1,73 @@
+# Neural Anvil content editor (Sveltia CMS)
+# Sign in with a GitHub personal access token that can write to the repository below.
+backend:
+  name: github
+  repo: Bhavesh45-lab/neuralanvil-website
+  branch: main
+  commit_messages:
+    create: "Add {{collection}}: {{slug}}"
+    update: "Update {{collection}}: {{slug}}"
+    delete: "Delete {{collection}}: {{slug}}"
+    uploadMedia: "Upload {{path}}"
+    deleteMedia: "Delete {{path}}"
+
+site_url: https://neuralanvilai.com
+display_url: https://neuralanvilai.com
+logo_url: /assets/img/brand/mark.png
+
+media_folder: assets/img/uploads
+public_folder: /assets/img/uploads
+
+collections:
+  - name: blog
+    label: Blog posts
+    label_singular: Blog post
+    description: Articles shown at neuralanvilai.com/blog/. Publishing goes live in about a minute.
+    folder: _posts
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    preview_path: "blog/{{slug}}/"
+    sortable_fields: [date, title, category]
+    summary: "{{title}}  ({{category}}, {{date}})"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Summary (shown on cards and in Google), widget: text, hint: "One or two sentences, under 200 characters." }
+      - { name: date, label: Publish date, widget: datetime, format: "YYYY-MM-DD HH:mm:ss ZZ", date_format: "DD MMM YYYY", time_format: "HH:mm" }
+      - name: category
+        label: Category
+        widget: select
+        options: [RAG, Agents, Prompting, LLMs, Engineering, Research, Tutorials, News]
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: cover, label: Cover image (1600 x 900), widget: image, required: false }
+      - { name: author, label: Author, widget: string, default: Neural Anvil }
+      - { name: math, label: Uses maths formulas, widget: boolean, default: false, required: false, hint: "Write formulas between $$ and $$." }
+      - { name: body, label: Article, widget: markdown }
+
+  - name: lessons
+    label: Learn lessons
+    label_singular: Lesson
+    description: Lessons shown at neuralanvilai.com/learn/, grouped into tracks and ordered by number.
+    folder: _lessons
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    preview_path: "learn/{{slug}}/"
+    sortable_fields: [track, order, title]
+    summary: "{{track}} · {{order}}. {{title}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - name: track
+        label: Track
+        widget: select
+        options:
+          - { label: Mathematics of AI, value: maths }
+          - { label: Neural networks & deep learning, value: deep-learning }
+          - { label: LLMs & transformers, value: llms }
+          - { label: Applied AI engineering, value: applied }
+      - { name: order, label: Lesson number in track, widget: number, value_type: int, min: 1 }
+      - { name: summary, label: One-line summary, widget: string }
+      - { name: duration, label: Duration, widget: string, default: "10 min lesson", required: false }
+      - { name: body, label: Lesson, widget: markdown }

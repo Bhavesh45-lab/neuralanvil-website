@@ -1,4 +1,110 @@
 {
   "channel": "UChFVNyFah39gclok8yCbX1w",
-  "videos": []
+  "videos": [
+    {
+      "id": "nGRPWuKBglk",
+      "title": "NEURAL ANVIL™ | Forging the Future of Intelligence",
+      "published": "2026-11-19T14:29:05+00:00",
+      "description": "# NEURAL ANVIL™ | Forging the Future of Intelligence\n\n**The future of intelligence is not simply something we wait for. It is something we build.**\n\nIntroducing **NEURAL ANVIL™** — an initiative dedicated to advancing the ideas, systems, an",
+      "short": false
+    },
+    {
+      "id": "LGZqKPPMaB4",
+      "title": "How a CNN Sees an Image (explained with a cat)",
+      "published": "2026-09-12T16:10:48+00:00",
+      "description": "A convolutional network doesn't see a cat. It sees edges, then textures, then ears — and only at the very last layer does it see \"cat\".\n\nThis walks through what actually happens to an image as it moves through a CNN: the convolution window,",
+      "short": false
+    },
+    {
+      "id": "4cRQ1NjKPDs",
+      "title": "How an LLM actually learns: backpropagation, one token at a time",
+      "published": "2026-09-12T07:39:32+00:00",
+      "description": "An LLM doesn't learn sentences. It learns one wrong guess at a time, and backpropagation is how the correction travels backwards.\n\nThis follows a single training step end to end: the forward pass producing a next-token prediction, the loss ",
+      "short": false
+    },
+    {
+      "id": "UU1y-WvQPXA",
+      "title": "Where we stand               #Farmers #WhereWeStand #MotivationalMusic",
+      "published": "2026-09-09T14:02:08+00:00",
+      "description": "Title Idea: Where We Stand | Original Motivational Anthem for Farmers\n\nAbout This Track:\nA heartfelt tribute to the unsung heroes of our world—the farmers. \"Where We Stand\" is a Modern Americana and Heartland Folk-Rock anthem that captures ",
+      "short": false
+    },
+    {
+      "id": "QNzRT6JLP4M",
+      "title": "How a RAG System Actually Works — explained with a car manual",
+      "published": "2026-09-09T13:45:31+00:00",
+      "description": "Retrieval-Augmented Generation, walked through with one real document: a car engine spec sheet.\n\nPhase 1, indexing — chunking the document, embedding each chunk into a vector, storing them in a vector database, and what that vector space ac",
+      "short": false
+    },
+    {
+      "id": "bAs_0ZZwRB0",
+      "title": "How an LLM actually works — from neuron to next token",
+      "published": "2026-09-03T15:17:04+00:00",
+      "description": "From a single artificial neuron to a model that predicts your next word — the whole path, in under three minutes.\n\nCovers what a neuron computes, how neurons stack into layers, what attention adds that plain layers can't, and how the final ",
+      "short": false
+    },
+    {
+      "id": "y9HB-dFevx4",
+      "title": "Watch an AI agent book a flight, step by step",
+      "published": "2026-09-03T03:33:15+00:00",
+      "description": "How to build smaA planner, an executor, and one tool call. This is what actually happens inside an agentic framework when you say \"book me a flight to Tokyo next Friday\" — and the exact step where most agents fall over.\n\n#aiagents #agentica",
+      "short": true
+    },
+    {
+      "id": "O8GS_uzqx74",
+      "title": "AI vs AGI vs ASI — and where humans actually sit",
+      "published": "2026-09-02T03:39:59+00:00",
+      "description": "Four labels, one chart, no hype. Narrow AI is here, AGI isn't, and ASI is a thought experiment — here's what separates them.\n\n#agi #artificialintelligence #ai",
+      "short": true
+    },
+    {
+      "id": "zVihwOAUDxs",
+      "title": "MF1.05 Span Subspace Independence /  Why embeddings need 1,536 dimensions, not 3",
+      "published": "2026-09-02T02:49:10+00:00",
+      "description": "Span, subspace and linear independence sound abstract until you ask why an embedding model outputs 1,536 numbers instead of 3. This is the answer.\n\n#linearalgebra #embeddings #machinelearning",
+      "short": true
+    },
+    {
+      "id": "ZJcKaiF55Gw",
+      "title": "MFML1.04 vector space and group.  / Why embeddings live in a \"vector space\" — in plain English",
+      "published": "2026-09-02T02:32:29+00:00",
+      "description": "Everyone says embeddings live in a vector space. Almost nobody says what that means. Two rules, thirty seconds.\n\n#linearalgebra #embeddings #mathsforml",
+      "short": true
+    },
+    {
+      "id": "SEctuT813SU",
+      "title": "MFML1.03 Matrix operation  / Matrix multiply is the only maths a neural net does",
+      "published": "2026-09-01T14:15:21+00:00",
+      "description": "Strip away the diagrams and a neural network is multiply, add, repeat. Here's the operation everything else is built on.\n\n#linearalgebra #neuralnetworks #mathsforml",
+      "short": true
+    },
+    {
+      "id": "r_wcQ2s28jE",
+      "title": "Add and scale — the only two rules a vector space hasMFML 1.02 vector space operation  /",
+      "published": "2026-09-01T13:54:02+00:00",
+      "description": "A vector space isn't a shape. It's two rules that have to keep holding. That's the whole definition.\n\n#linearalgebra #mathsforml #machinelearning",
+      "short": true
+    },
+    {
+      "id": "Rxgh0hXUH6c",
+      "title": "One equation, three outcomes — read it off the rank",
+      "published": "2026-09-01T12:58:32+00:00",
+      "description": "Unique solution, infinitely many, or none at all. You don't have to solve the system to know which one you've got.\n\n#linearalgebra #mathsforml #machinelearning",
+      "short": true
+    },
+    {
+      "id": "oZOLTRRR_7c",
+      "title": "A perceptron is just multiply and add",
+      "published": "2026-09-01T12:44:46+00:00",
+      "description": "The unit that every neural network is made of does exactly two things. Here it is, end to end, with real numbers.\n\n#perceptron #neuralnetworks #deeplearning",
+      "short": true
+    },
+    {
+      "id": "e1xeH_Id7Js",
+      "title": "Same docs, 4 vector DBs, 4 different answers",
+      "published": "2026-09-01T08:26:07+00:00",
+      "description": "Identical documents, identical embeddings, four vector databases — and four different retrieval results. Here's why that happens.\n\n#vectordatabase #rag #llm",
+      "short": true
+    }
+  ]
 }

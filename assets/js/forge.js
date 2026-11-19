@@ -16,23 +16,30 @@
     earth.src = canvas.dataset.earth;
   }
 
-  let W, H, DPR, planet, stars = [], lights = [], nodes = [], streams = [], ripples = [], lastRipple = 0, lightSpan = 0.4, visible = true;
+  let W, H, DPR, planet, emC, sky = null, reach = [], stars = [], lights = [], nodes = [], streams = [], ripples = [], lastRipple = 0, lightSpan = 0.4, visible = true;
   let mx = 0, my = 0, px = 0, py = 0;
 
   const rand = (a, b) => a + Math.random() * (b - a);
 
   function layout() {
     DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.clientWidth; H = canvas.clientHeight;
+    W = canvas.clientWidth; H = canvas.clientHeight; lastW = W;
     canvas.width = W * DPR; canvas.height = H * DPR;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
     // Anchor the horizon just under the emblem
     let ex = W * 0.72, ey = H * 0.66;
+    emC = { x: W * 0.72, y: H * 0.4, r: 160 };
     if (emblem) {
-      const r = emblem.getBoundingClientRect(), c = canvas.getBoundingClientRect();
-      ex = r.left - c.left + r.width / 2;
-      ey = r.top - c.top + r.height * 0.93;
+      // Measure the emblem's resting layout position (offsets ignore CSS transforms),
+      // so entrance animation, scroll parallax and tilt can never shift the horizon
+      const host = canvas.offsetParent || canvas.parentElement;
+      let left = 0, top = 0, el = emblem;
+      while (el && el !== host) { left += el.offsetLeft; top += el.offsetTop; el = el.offsetParent; }
+      const ew = emblem.offsetWidth, eh = emblem.offsetHeight;
+      ex = left - canvas.offsetLeft + ew / 2;
+      ey = top - canvas.offsetTop + eh * 0.93;
+      emC = { x: ex, y: top - canvas.offsetTop + eh * 0.5, r: ew * 0.52 };
     }
     const wide = W > 860;
     const R = wide ? Math.max(W * 1.12, 1350) : W * 2.0;
@@ -60,10 +67,16 @@
     lightSpan = span;
     streams = []; ripples = []; lastRipple = 0;
 
-    // Neural network nodes in the upper field
-    nodes = Array.from({ length: wide ? 70 : 34 }, () => ({
-      x: rand(0, W), y: rand(0, H * 0.75), vx: rand(-0.12, 0.12), vy: rand(-0.08, 0.08),
-    }));
+    // Constellation field across the sky (shared with the dark sections)
+    if (window.NAConstellation) {
+      sky = NAConstellation.build(W, H * 0.8, { seed: 4242, conDensity: wide ? 95000 : 80000, dustDensity: 7000, gold: .14 });
+      // a few constellation stars reach toward the neural globe
+      reach = sky.stars
+        .map(s => ({ s, d: Math.hypot(s.x - emC.x, s.y - emC.y) }))
+        .filter(o => o.d > emC.r * 1.25 && o.d < emC.r * 3.4)
+        .sort((a, b) => a.d - b.d).slice(0, wide ? 6 : 3)
+        .map((o, i) => ({ s: o.s, ph: i * 0.17 }));
+    }
   }
 
   function rays(t) {
@@ -192,30 +205,88 @@
     ctx.restore();
   }
 
-  function network() {
-    const link = 150;
-    for (const n of nodes) {
-      if (!reduce) { n.x += n.vx; n.y += n.vy; }
-      if (n.x < -20) n.x = W + 20; if (n.x > W + 20) n.x = -20;
-      if (n.y < -20) n.y = H * 0.75; if (n.y > H * 0.75) n.y = -20;
-    }
-    const cx = (mx + 1) * W / 2, cy = (my + 1) * H / 2;
-    for (let i = 0; i < nodes.length; i++) {
-      const a = nodes[i];
-      for (let j = i + 1; j < nodes.length; j++) {
-        const b = nodes[j];
-        const d = Math.hypot(a.x - b.x, a.y - b.y);
-        if (d < link) {
-          const near = Math.max(0, 1 - Math.hypot((a.x + b.x) / 2 - cx, (a.y + b.y) / 2 - cy) / 260);
-          ctx.strokeStyle = `rgba(80,170,255,${(1 - d / link) * (0.08 + near * 0.35)})`;
-          ctx.lineWidth = 0.7;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
+  // Copy sits on the left: keep the sky very quiet there so text stays crisp
+  const skyFade = (x, y) => {
+    const left = Math.min(1, Math.max(0, (x / W - 0.18) / 0.4));
+    return 0.3 + 0.7 * left;
+  };
+  function network(t) {
+    if (!sky) return;
+    ctx.save(); ctx.translate(-px * 6, -py * 4);
+    NAConstellation.draw(ctx, sky, t, { opacity: 1.15, fade: skyFade });
+    // connections reaching toward the globe, fading as they arrive
+    for (const r of reach) {
+      const a = r.s, dx = emC.x - a.x, dy = emC.y - a.y, d = Math.hypot(dx, dy);
+      const ex = emC.x - dx / d * emC.r * 0.9, ey = emC.y - dy / d * emC.r * 0.9;
+      const gr = ctx.createLinearGradient(a.x, a.y, ex, ey);
+      gr.addColorStop(0, "rgba(120,185,255,0.32)"); gr.addColorStop(1, "rgba(120,185,255,0)");
+      ctx.strokeStyle = gr; ctx.lineWidth = 0.7;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(ex, ey); ctx.stroke();
+      if (!reduce) {
+        const f = ((t * 0.00012) + r.ph) % 1, gx = a.x + (ex - a.x) * f, gy = a.y + (ey - a.y) * f;
+        ctx.fillStyle = `rgba(190,225,255,${0.5 * Math.sin(Math.PI * f)})`;
+        ctx.beginPath(); ctx.arc(gx, gy, 1.3, 0, 6.283); ctx.fill();
       }
-      const near = Math.max(0, 1 - Math.hypot(a.x - cx, a.y - cy) / 220);
-      ctx.fillStyle = `rgba(150,210,255,${0.18 + near * 0.7})`;
-      ctx.beginPath(); ctx.arc(a.x, a.y, 1.2 + near * 1.4, 0, 6.283); ctx.fill();
     }
+    ctx.restore();
+  }
+
+  // Sunrise on the horizon, to the right of the emblem: warm gold glow, white-hot core,
+  // a horizontal light streak, soft rays and a gold rim along the edge of the Earth.
+  function sun(t) {
+    const { x, y, R } = planet;
+    const ox = px * 8, oy = py * 5;
+    const sx0 = Math.min(W * 0.86, x + (W - x) * 0.72);
+    const dx = sx0 - x;
+    if (Math.abs(dx) >= R) return;
+    const sx = sx0 + ox, sy = y - Math.sqrt(R * R - dx * dx) + oy - 2;
+    const pulse = reduce ? 1 : 0.92 + Math.sin(t * 0.0007) * 0.08;
+    const S = Math.min(W, 1600) / 1536;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    // wide warm bloom
+    let g = ctx.createRadialGradient(sx, sy, 0, sx, sy, 620 * S);
+    g.addColorStop(0, `rgba(255,195,100,${0.7 * pulse})`);
+    g.addColorStop(0.18, `rgba(255,160,60,${0.3 * pulse})`);
+    g.addColorStop(0.5, `rgba(255,130,40,${0.08 * pulse})`);
+    g.addColorStop(1, "rgba(255,120,30,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(sx, sy, 620 * S, 0, 6.283); ctx.fill();
+    // gold rim hugging the limb on both sides of the sun
+    const ang = Math.atan2(sy - oy - y, sx - ox - x), span = 0.32;
+    for (const [w, a] of [[10, 0.12], [3.5, 0.35], [1.4, 0.9]]) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(x + ox, y + oy, R, ang - span, ang + span);
+      const rg = ctx.createRadialGradient(sx, sy, 0, sx, sy, R * span);
+      rg.addColorStop(0, `rgba(255,225,160,${a})`);
+      rg.addColorStop(0.45, `rgba(255,160,60,${a * 0.45})`);
+      rg.addColorStop(1, "rgba(255,140,40,0)");
+      ctx.strokeStyle = rg; ctx.lineWidth = w; ctx.stroke();
+      ctx.restore();
+    }
+    // soft rays
+    ctx.lineCap = "round";
+    for (let i = 0; i < 14; i++) {
+      const a = -Math.PI / 2 + (i - 6.5) * 0.2 + (reduce ? 0 : Math.sin(t * 0.0002 + i) * 0.02);
+      const len = (140 + ((i * 53) % 120)) * S * pulse;
+      const lg = ctx.createLinearGradient(sx, sy, sx + Math.cos(a) * len, sy + Math.sin(a) * len);
+      lg.addColorStop(0, "rgba(255,215,150,0.22)"); lg.addColorStop(1, "rgba(255,180,90,0)");
+      ctx.strokeStyle = lg; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + Math.cos(a) * len, sy + Math.sin(a) * len); ctx.stroke();
+    }
+    // horizontal streak
+    ctx.save(); ctx.translate(sx, sy); ctx.scale(1, 0.06);
+    g = ctx.createRadialGradient(0, 0, 0, 0, 0, 380 * S);
+    g.addColorStop(0, `rgba(255,230,180,${0.75 * pulse})`); g.addColorStop(1, "rgba(255,170,80,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 380 * S, 0, 6.283); ctx.fill();
+    ctx.restore();
+    // core
+    g = ctx.createRadialGradient(sx, sy, 0, sx, sy, 60 * S);
+    g.addColorStop(0, "rgba(255,255,245,1)");
+    g.addColorStop(0.18, "rgba(255,240,200,0.9)");
+    g.addColorStop(0.5, "rgba(255,190,100,0.3)");
+    g.addColorStop(1, "rgba(255,160,60,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(sx, sy, 60 * S, 0, 6.283); ctx.fill();
+    ctx.restore();
   }
 
   function frame(t) {
@@ -229,8 +300,9 @@
       ctx.fillRect(s.x - px * 3, s.y - py * 3, s.r, s.r);
     }
     rays(t);
-    network();
+    network(t);
     drawPlanet(t);
+    sun(t);
     if (!reduce) requestAnimationFrame(frame);
   }
 
@@ -238,8 +310,13 @@
     mx = (e.clientX / innerWidth) * 2 - 1;
     my = (e.clientY / innerHeight) * 2 - 1;
   });
-  let rt;
-  window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(layout, 120); });
+  // Phones fire resize when the address bar shows or hides while scrolling.
+  // Only rebuild when the width changes (rotation, window resize) so the Earth stays put.
+  let rt, lastW = 0;
+  window.addEventListener("resize", () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => { if (canvas.clientWidth !== lastW || Math.abs(canvas.clientHeight - H) > 2) layout(); }, 150);
+  });
 
   if ("IntersectionObserver" in window) {
     new IntersectionObserver((e) => { visible = e[0].isIntersecting; }).observe(canvas);

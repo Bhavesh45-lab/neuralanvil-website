@@ -20,7 +20,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
   <script src="/assets/js/main.js" defer></script>
-  <script src="/assets/js/motion.js" defer></script>{% for s in page.scripts %}
+  <script src="/assets/js/motion.js" defer></script>
+  <script src="/assets/js/constellation.js" defer></script>{% for s in page.scripts %}
   <script src="/assets/js/{{ s }}" defer></script>{% endfor %}{% if page.math %}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" defer></script>
@@ -35,7 +36,7 @@
         <img class="brand-mark" src="/assets/img/brand/mark.png" alt="" width="40" height="36">
         <img class="brand-word" src="/assets/img/brand/wordmark.png" alt="Neural Anvil" width="190" height="16">
       </a>
-      <ul class="nav-links"><li><a href="/research/">Research</a></li><li><a href="/intelligence/">Intelligence</a></li><li><a href="/institute/">Institute</a></li><li><a href="/insights/">Insights</a></li><li><a href="/blog/">Blog</a></li></ul>
+      <ul class="nav-links"><li><a href="/about/">About</a></li><li><a href="/institute/">Institute</a></li><li class="has-menu"><a href="/education/" aria-haspopup="true" aria-expanded="false">Education <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a><div class="menu"><a href="/education/videos/"><b>Videos</b><span>Watch our YouTube lessons right here</span></a><a href="/learn/"><b>Courses</b><span>Structured tracks from first principles</span></a><a href="/blog/"><b>Blog</b><span>Deep dives on RAG, agents and LLMs</span></a><a href="/insights/"><b>Insights</b><span>Explainers and the AI glossary</span></a></div></li></ul>
       <div class="nav-cta">
         <a class="btn btn-line btn-sm" href="/contact/">Contact <span aria-hidden="true">→</span></a>
         <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
@@ -52,12 +53,12 @@
       <div class="foot-top">
         <a class="brand" href="/"><img class="brand-mark" src="/assets/img/brand/mark.png" alt="" width="40" height="36"><img class="brand-word" src="/assets/img/brand/wordmark.png" alt="Neural Anvil" width="190" height="16"></a>
         <nav class="foot-nav" aria-label="Footer">
-          <a href="/research/">Research</a>
-          <a href="/intelligence/">Intelligence</a>
+          <a href="/about/">About</a>
           <a href="/institute/">Institute</a>
-          <a href="/insights/">Insights</a>
+          <a href="/education/videos/">Videos</a>
+          <a href="/learn/">Courses</a>
           <a href="/blog/">Blog</a>
-          <a href="/learn/">Learn</a>
+          <a href="/insights/">Insights</a>
           <a href="/contact/">Contact</a>
         </nav>
       </div>

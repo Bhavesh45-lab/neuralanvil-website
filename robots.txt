@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 
-Sitemap: https://neuralanvil.ai/sitemap.xml
+Sitemap: https://neuralanvilai.com/sitemap.xml

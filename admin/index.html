@@ -40,16 +40,41 @@ layout: null
     .setup { border: 1px solid rgba(31,168,255,.4); background: rgba(31,168,255,.07); padding: 1.2rem 1.4rem; font-size: .92rem; color: var(--silver); }
     .setup ol { margin: .6rem 0 0; padding-left: 1.2rem; }
     .setup code { background: rgba(255,255,255,.08); padding: .1em .35em; }
+
+    body.locked main.adm-wrap { display: none; }
+    .gate { display: none; min-height: calc(100vh - 80px); align-items: center; justify-content: center; padding: 3rem 1.25rem; }
+    body.locked .gate { display: flex; }
+    .gate-box { width: min(100%, 460px); border: 1px solid var(--line-strong); background: #090d15; padding: 2.4rem; }
+    .gate-box h1 { font-size: 1.8rem; font-weight: 600; letter-spacing: -.02em; margin-bottom: .6rem; }
+    .gate-box p { color: var(--mute); font-size: .92rem; }
+    .gate-box input { width: 100%; margin: 1.2rem 0 .6rem; background: #05070c; border: 1px solid var(--line-strong); color: var(--ink); padding: .9rem 1rem; font: 400 .92rem ui-monospace, Consolas, monospace; }
+    .gate-box input:focus { outline: none; border-color: var(--arc); box-shadow: 0 0 0 4px var(--arc-soft); }
+    .gate-msg { min-height: 1.4em; font-size: .85rem; color: #ff9b9b; margin: 0 0 1rem; }
+    .gate-box .btn { width: 100%; justify-content: center; }
+    .gate-out { background: none; border: 0; color: var(--mute); font-size: .85rem; cursor: pointer; padding: 0; }
+    .gate-out:hover { color: var(--ink); }
     @media (max-width: 900px) { .adm-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
-<body>
+<body class="locked">
   <header class="adm-head">
     <nav class="wrap nav" aria-label="Admin">
       <a class="brand" href="/"><img class="brand-mark" src="/assets/img/brand/mark.png" alt="" width="40" height="36"><img class="brand-word" src="/assets/img/brand/wordmark.png" alt="Neural Anvil" width="190" height="16"></a>
-      <div class="nav-cta"><a class="btn btn-line btn-sm" href="/">View site <span aria-hidden="true">→</span></a></div>
+      <div class="nav-cta"><button class="gate-out" type="button" data-signout hidden>Sign out</button><a class="btn btn-line btn-sm" href="/">View site <span aria-hidden="true">→</span></a></div>
     </nav>
   </header>
+
+  <section class="gate" aria-labelledby="gate-title">
+    <form class="gate-box" data-gate>
+      <span class="eyebrow"><span>Admin <b>sign in.</b></span></span>
+      <h1 id="gate-title">Neural Anvil admin</h1>
+      <p>Paste your GitHub access token. It is checked against the website repository and kept only for this browser tab.</p>
+      <label class="skip" for="gate-token">GitHub access token</label>
+      <input id="gate-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" required>
+      <p class="gate-msg" role="alert" data-gate-msg></p>
+      <button class="btn btn-white" type="submit">Sign in <span aria-hidden="true">→</span></button>
+    </form>
+  </section>
 
   <main class="wrap adm-wrap">
     <span class="eyebrow"><span>Admin <b>dashboard.</b></span></span>
@@ -149,6 +174,39 @@ layout: null
     </section>
   </main>
 
+  <script>
+  /* Admin gate: only owners of the repository get past this screen.
+     The token is verified with GitHub, then a "signed in" flag is kept for this tab only. */
+  (function () {
+    var REPO = 'Bhavesh45-lab/neuralanvil-website';
+    var KEY = 'na-admin-ok';
+    var body = document.body, form = document.querySelector('[data-gate]'), msg = document.querySelector('[data-gate-msg]');
+    var out = document.querySelector('[data-signout]');
+    function unlock() { body.classList.remove('locked'); out.hidden = false; }
+    function verify(token) {
+      return fetch('https://api.github.com/repos/' + REPO, { headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' } })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (d) { if (!d.permissions || !d.permissions.push) throw new Error('nopush'); return true; });
+    }
+    try { if (sessionStorage.getItem(KEY) === '1') unlock(); } catch (e) {}
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var t = document.getElementById('gate-token').value.trim();
+      msg.textContent = 'Checking…'; msg.style.color = 'var(--mute)';
+      verify(t).then(function () {
+        try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+        document.getElementById('gate-token').value = '';
+        msg.textContent = ''; unlock();
+      }).catch(function (err) {
+        msg.style.color = '#ff9b9b';
+        msg.textContent = String(err.message) === 'nopush'
+          ? 'This token can read the repository but cannot edit it. Use a token with Contents: Read and write.'
+          : 'That token was not accepted. Check it was copied in full and has access to neuralanvil-website.';
+      });
+    });
+    out.addEventListener('click', function () { try { sessionStorage.removeItem(KEY); } catch (e) {} location.reload(); });
+  })();
+  </script>
   <script>
   (function () {
     var code = (window.NA_ANALYTICS || {}).GOATCOUNTER;

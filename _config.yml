@@ -46,6 +46,11 @@ tracks:
     level: Professional
     summary: RAG, agents, evaluation and deployment, turning models into reliable products.
 
+# Editor helper files whose names start with "_" (Jekyll would skip them otherwise)
+include:
+  - _shared-module_34-DsunU0Dh.js
+  - _shared-module_42-YB21lmji.js
+
 exclude:
   - README.md
   - "*.py"

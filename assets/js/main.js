@@ -39,6 +39,22 @@
     );
   }
 
+
+  // Education dropdown: hover on desktop; tap to open on touch screens; Esc closes
+  document.querySelectorAll(".nav-links .has-menu").forEach((li) => {
+    const a = li.querySelector(":scope > a");
+    const set = (on) => { li.classList.toggle("open", on); a.setAttribute("aria-expanded", String(on)); };
+    li.addEventListener("mouseenter", () => a.setAttribute("aria-expanded", "true"));
+    li.addEventListener("mouseleave", () => set(false));
+    a.addEventListener("click", (e) => {
+      const touch = window.matchMedia("(hover: none)").matches;
+      const mobileMenu = doc.classList.contains("menu-open");
+      if (touch && !mobileMenu && !li.classList.contains("open")) { e.preventDefault(); set(true); }
+    });
+    document.addEventListener("click", (e) => { if (!li.contains(e.target)) set(false); });
+    li.addEventListener("keydown", (e) => { if (e.key === "Escape") { set(false); a.focus(); } });
+  });
+
   // Opt-in reveal for a few key blocks only
   const els = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window && els.length) {

@@ -1,0 +1,68 @@
+# Keeps the website's video list in step with the Neural Anvil YouTube channel.
+# Runs every hour (and on demand from the Actions tab). When there is a new upload,
+# it updates assets/data/youtube.json and GitHub Pages republishes the site by itself.
+name: Sync YouTube videos
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: youtube-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the channel feed
+        run: |
+          python3 - <<'PY'
+          import json, sys, time, urllib.request, xml.etree.ElementTree as ET
+          CHANNEL = "UChFVNyFah39gclok8yCbX1w"
+          URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL}"
+          NS = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015",
+                "m": "http://search.yahoo.com/mrss/"}
+          data = None
+          for attempt in range(4):
+              try:
+                  req = urllib.request.Request(URL, headers={"User-Agent": "Mozilla/5.0 (neuralanvil-sync)"})
+                  data = urllib.request.urlopen(req, timeout=30).read()
+                  break
+              except Exception as e:
+                  print("feed not reachable yet:", e); time.sleep(15)
+          if not data:
+              print("YouTube feed unavailable, keeping the current list."); sys.exit(0)
+          root = ET.fromstring(data)
+          videos = []
+          for e in root.findall("a:entry", NS):
+              g = e.find("m:group", NS)
+              desc = (g.findtext("m:description", default="", namespaces=NS) if g is not None else "") or ""
+              link = e.find("a:link", NS).get("href", "")
+              videos.append({
+                  "id": e.findtext("yt:videoId", namespaces=NS),
+                  "title": e.findtext("a:title", namespaces=NS),
+                  "published": e.findtext("a:published", namespaces=NS),
+                  "description": desc.strip()[:240],
+                  "short": "/shorts/" in link,
+              })
+          out = {"channel": CHANNEL, "videos": videos}
+          with open("assets/data/youtube.json", "w", encoding="utf-8") as f:
+              json.dump(out, f, ensure_ascii=False, indent=2); f.write("\n")
+          print(f"{len(videos)} videos in the feed")
+          PY
+
+      - name: Publish if anything changed
+        run: |
+          if git diff --quiet -- assets/data/youtube.json; then echo "No new videos."; exit 0; fi
+          git config user.name "neuralanvil-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/youtube.json
+          git commit -m "Sync latest YouTube videos"
+          git push

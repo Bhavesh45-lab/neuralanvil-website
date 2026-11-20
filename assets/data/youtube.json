@@ -2,6 +2,13 @@
   "channel": "UChFVNyFah39gclok8yCbX1w",
   "videos": [
     {
+      "id": "8sCdYqdYro0",
+      "title": "You used AI 8 times before 9 AM… and never noticed 🤯",
+      "published": "2026-11-20T19:26:25+00:00",
+      "description": "You used AI 8 times before 9 AM… and never noticed 🤯",
+      "short": true
+    },
+    {
       "id": "voYpiyNyEPs",
       "title": "How AI Runs an ECU Factory in 50 Seconds #machinelearning#smartfactory   #industry40  #manufacturing",
       "published": "2026-11-20T11:12:43+00:00",
@@ -97,13 +104,6 @@
       "title": "MFML1.03 Matrix operation  / Matrix multiply is the only maths a neural net does",
       "published": "2026-09-01T14:15:21+00:00",
       "description": "Strip away the diagrams and a neural network is multiply, add, repeat. Here's the operation everything else is built on.\n\n#linearalgebra #neuralnetworks #mathsforml",
-      "short": true
-    },
-    {
-      "id": "r_wcQ2s28jE",
-      "title": "Add and scale — the only two rules a vector space hasMFML 1.02 vector space operation  /",
-      "published": "2026-09-01T13:54:02+00:00",
-      "description": "A vector space isn't a shape. It's two rules that have to keep holding. That's the whole definition.\n\n#linearalgebra #mathsforml #machinelearning",
       "short": true
     }
   ]

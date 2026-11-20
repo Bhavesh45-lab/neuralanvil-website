@@ -2,6 +2,27 @@
   "channel": "UChFVNyFah39gclok8yCbX1w",
   "videos": [
     {
+      "id": "voYpiyNyEPs",
+      "title": "How AI Runs an ECU Factory in 50 Seconds #machinelearning#smartfactory   #industry40  #manufacturing",
+      "published": "2026-11-20T11:12:43+00:00",
+      "description": "#smartfactory   #industry40  #manufacturing  #ECU #automotiveelectronics  #machinelearning  #robotics  #automation  #Engineering #techshorts #ai",
+      "short": true
+    },
+    {
+      "id": "wCpqMWxj6A8",
+      "title": "How AI Runs an ECU Production Line: 6 Stations Explained Step by Step",
+      "published": "2026-11-20T11:06:38+00:00",
+      "description": "How can AI make an automotive ECU production line smarter, catching defects earlier, using past data, and helping engineers find root causes in minutes instead of hours?\n\nIn this video we walk through a 6-station ECU line, step by step, and",
+      "short": false
+    },
+    {
+      "id": "F3EwERJoHbQ",
+      "title": "RAG Explained: How LLMs Answer From Your Own Data (Full Architecture, 7 min)",
+      "published": "2026-11-20T06:30:57+00:00",
+      "description": "How does an AI answer questions about YOUR company's data? This 7-minute visual guide explains the complete LLM + RAG (Retrieval-Augmented Generation) architecture, step by step, from raw documents to a grounded answer with citations.\n\nYou'",
+      "short": false
+    },
+    {
       "id": "nGRPWuKBglk",
       "title": "NEURAL ANVIL™ | Forging the Future of Intelligence",
       "published": "2026-11-19T14:29:05+00:00",
@@ -83,27 +104,6 @@
       "title": "Add and scale — the only two rules a vector space hasMFML 1.02 vector space operation  /",
       "published": "2026-09-01T13:54:02+00:00",
       "description": "A vector space isn't a shape. It's two rules that have to keep holding. That's the whole definition.\n\n#linearalgebra #mathsforml #machinelearning",
-      "short": true
-    },
-    {
-      "id": "Rxgh0hXUH6c",
-      "title": "One equation, three outcomes — read it off the rank",
-      "published": "2026-09-01T12:58:32+00:00",
-      "description": "Unique solution, infinitely many, or none at all. You don't have to solve the system to know which one you've got.\n\n#linearalgebra #mathsforml #machinelearning",
-      "short": true
-    },
-    {
-      "id": "oZOLTRRR_7c",
-      "title": "A perceptron is just multiply and add",
-      "published": "2026-09-01T12:44:46+00:00",
-      "description": "The unit that every neural network is made of does exactly two things. Here it is, end to end, with real numbers.\n\n#perceptron #neuralnetworks #deeplearning",
-      "short": true
-    },
-    {
-      "id": "e1xeH_Id7Js",
-      "title": "Same docs, 4 vector DBs, 4 different answers",
-      "published": "2026-09-01T08:26:07+00:00",
-      "description": "Identical documents, identical embeddings, four vector databases — and four different retrieval results. Here's why that happens.\n\n#vectordatabase #rag #llm",
       "short": true
     }
   ]

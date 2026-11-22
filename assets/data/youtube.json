@@ -2,6 +2,13 @@
   "channel": "UChFVNyFah39gclok8yCbX1w",
   "videos": [
     {
+      "id": "S7rPTeH6G6g",
+      "title": "Is That Really Them? AI Voice Clones Explained (Protect Your Family)",
+      "published": "2026-11-22T11:02:31+00:00",
+      "description": "\"Mom, it's me… I'm in trouble.\" It sounds exactly like your son, but it isn't him. It's an AI voice clone.\n\nAI can now copy a voice from just a few seconds of audio, and even fake a face on a live video call. In under 5 minutes, see how voi",
+      "short": false
+    },
+    {
       "id": "8sCdYqdYro0",
       "title": "You used AI 8 times before 9 AM… and never noticed 🤯",
       "published": "2026-11-20T19:26:25+00:00",
@@ -97,13 +104,6 @@
       "title": "MFML1.04 vector space and group.  / Why embeddings live in a \"vector space\" — in plain English",
       "published": "2026-09-02T02:32:29+00:00",
       "description": "Everyone says embeddings live in a vector space. Almost nobody says what that means. Two rules, thirty seconds.\n\n#linearalgebra #embeddings #mathsforml",
-      "short": true
-    },
-    {
-      "id": "SEctuT813SU",
-      "title": "MFML1.03 Matrix operation  / Matrix multiply is the only maths a neural net does",
-      "published": "2026-09-01T14:15:21+00:00",
-      "description": "Strip away the diagrams and a neural network is multiply, add, repeat. Here's the operation everything else is built on.\n\n#linearalgebra #neuralnetworks #mathsforml",
       "short": true
     }
   ]

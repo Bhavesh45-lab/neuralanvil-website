@@ -2,6 +2,13 @@
   "channel": "UChFVNyFah39gclok8yCbX1w",
   "videos": [
     {
+      "id": "vSnKPDCI9k4",
+      "title": "AI predictive maintenance in manufacturing",
+      "published": "2026-11-26T09:15:16+00:00",
+      "description": "#shorts #youtubeshorts",
+      "short": true
+    },
+    {
       "id": "S7rPTeH6G6g",
       "title": "Is That Really Them? AI Voice Clones Explained (Protect Your Family)",
       "published": "2026-11-22T11:02:31+00:00",
@@ -97,13 +104,6 @@
       "title": "MF1.05 Span Subspace Independence /  Why embeddings need 1,536 dimensions, not 3",
       "published": "2026-09-02T02:49:10+00:00",
       "description": "Span, subspace and linear independence sound abstract until you ask why an embedding model outputs 1,536 numbers instead of 3. This is the answer.\n\n#linearalgebra #embeddings #machinelearning",
-      "short": true
-    },
-    {
-      "id": "ZJcKaiF55Gw",
-      "title": "MFML1.04 vector space and group.  / Why embeddings live in a \"vector space\" — in plain English",
-      "published": "2026-09-02T02:32:29+00:00",
-      "description": "Everyone says embeddings live in a vector space. Almost nobody says what that means. Two rules, thirty seconds.\n\n#linearalgebra #embeddings #mathsforml",
       "short": true
     }
   ]

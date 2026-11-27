@@ -2,6 +2,13 @@
   "channel": "UChFVNyFah39gclok8yCbX1w",
   "videos": [
     {
+      "id": "fWx5ObUy6u4",
+      "title": "How to Write a System Prompt That Actually Works ?           #promptengineering  #systemprompt  #ai",
+      "published": "2026-11-27T12:01:40+00:00",
+      "description": "Your AI assistant rambles, invents policies, and forgets its output format? The problem usually isn't the model. It's the system prompt.\n\nIn 5 minutes, learn how to write a system prompt that holds up in production: the 6-part anatomy, 6 pr",
+      "short": false
+    },
+    {
       "id": "vSnKPDCI9k4",
       "title": "AI predictive maintenance in manufacturing",
       "published": "2026-11-26T09:15:16+00:00",
@@ -97,13 +104,6 @@
       "title": "AI vs AGI vs ASI — and where humans actually sit",
       "published": "2026-09-02T03:39:59+00:00",
       "description": "Four labels, one chart, no hype. Narrow AI is here, AGI isn't, and ASI is a thought experiment — here's what separates them.\n\n#agi #artificialintelligence #ai",
-      "short": true
-    },
-    {
-      "id": "zVihwOAUDxs",
-      "title": "MF1.05 Span Subspace Independence /  Why embeddings need 1,536 dimensions, not 3",
-      "published": "2026-09-02T02:49:10+00:00",
-      "description": "Span, subspace and linear independence sound abstract until you ask why an embedding model outputs 1,536 numbers instead of 3. This is the answer.\n\n#linearalgebra #embeddings #machinelearning",
       "short": true
     }
   ]
